@@ -5,12 +5,14 @@
 // teclas que usa el juego, así que no hay lógica duplicada.
 // Se activa solo en pantallas táctiles (o con ?tactil en la dirección, para probarlo).
 
-const TOUCH = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || /[?&]tactil/.test(location.search);
+const TOUCH = IS_TOUCH;
 let touchPad = { left: 0, right: 0 };       // columnas de interfaz que ocupan los controles (para no tapar mensajes)
 
 (function setupTouch() {
   if (!TOUCH) return;
   document.body.classList.add('touch');
+  const standalone = window.navigator.standalone || matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches;
+  if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !standalone) document.body.classList.add('ios');
   const press = code => { if (!keys[code]) { keys[code] = true; window.dispatchEvent(new KeyboardEvent('keydown', { code })); } };
   const release = code => { if (keys[code]) { keys[code] = false; window.dispatchEvent(new KeyboardEvent('keyup', { code })); } };
   const tap = code => { press(code); setTimeout(() => release(code), 60); };
@@ -44,6 +46,7 @@ let touchPad = { left: 0, right: 0 };       // columnas de interfaz que ocupan l
       <button id="cont">Continuar</button>
     </div>
     <button id="skip">Saltar intro ›</button>
+    <div id="iostip">Para jugar a pantalla completa: toca <b>Compartir</b> <span>⬆</span> y luego <b>«Añadir a pantalla de inicio»</b>.</div>
     <div id="rotate">Gira el móvil para jugar en horizontal ⟳</div>`;
   document.body.appendChild(root);
 
@@ -61,8 +64,12 @@ let touchPad = { left: 0, right: 0 };       // columnas de interfaz que ocupan l
   root.querySelector('#gear').addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); toggle('gear'); });
   for (const b of root.querySelectorAll('[data-close]')) b.addEventListener('pointerup', () => setTimeout(() => toggle(null), 80));
   R.canvas.addEventListener('pointerdown', () => toggle(null));
-  root.querySelector('#newgame').addEventListener('pointerdown', e => { e.preventDefault(); tap('Enter'); });
-  root.querySelector('#cont').addEventListener('pointerdown', e => { e.preventDefault(); tap('KeyC'); });
+  const goFull = async () => {
+    try { if (!document.fullscreenElement && document.documentElement.requestFullscreen) { await document.documentElement.requestFullscreen(); await screen.orientation.lock('landscape'); } }
+    catch (err) { /* iPhone y algunos navegadores no lo permiten */ }
+  };
+  root.querySelector('#newgame').addEventListener('pointerdown', e => { e.preventDefault(); goFull(); tap('Enter'); });
+  root.querySelector('#cont').addEventListener('pointerdown', e => { e.preventDefault(); goFull(); tap('KeyC'); });
   root.querySelector('#skip').addEventListener('pointerdown', e => { e.preventDefault(); tap('Escape'); });
   root.querySelector('#fs').addEventListener('pointerdown', async e => {
     e.preventDefault();

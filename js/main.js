@@ -2,7 +2,8 @@
 // ASCII World: juego en tiempo real. Mundo, entidades, combate, luces, clima e interfaz.
 
 const R = new AsciiGL(document.getElementById('screen'));
-const UI = new TextLayer(R);    // interfaz con letra de tamaño fijo, encima del mundo
+const IS_TOUCH = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || /[?&]tactil/.test(location.search);
+const UI = new TextLayer(R, IS_TOUCH ? 11 : 13);    // interfaz con letra de tamaño fijo, encima del mundo
 let fontPx = window.innerWidth < 900 ? 8 : 9;
 try { fontPx = parseInt(localStorage.getItem('aw-font2')) || fontPx; } catch (e) { /* sin almacenamiento */ }
 R.setFont(fontPx);
@@ -1143,6 +1144,22 @@ function wrap(text, w) {
 
 function drawHud() {
   const p = player;
+  const hpc0 = p.hp / p.maxHp > 0.5 ? [90, 220, 80] : p.hp / p.maxHp > 0.25 ? [255, 200, 60] : [255, 70, 60];
+  const fc0 = p.food > 50 ? [230, 190, 90] : p.food > 25 ? [255, 150, 60] : [255, 70, 50];
+  const quest0 = quest === 0 ? 'Habla con el rey.' : quest >= 5 ? '¡Reino a salvo!' : dragonSlain ? 'Avisa al rey.'
+    : quest === 1 ? 'Mata a la araña gigante.' : quest === 2 ? 'Colmillo al herrero.' : `Dragón (al ${compassTo(world.lair.x, world.lair.y)}).`;
+  if (IS_TOUCH) {                                         // panel compacto para el móvil
+    box(0, 0, 27, 7, `Nv ${p.lvl}`);
+    bar(1, 1, 'HP', p.hp, p.maxHp, 9, hpc0);
+    bar(1, 2, 'XP', p.xp, p.lvl * 30, 9, [110, 160, 255]);
+    bar(1, 3, 'Co', p.food, 100, 9, fc0);
+    UI.text(1, 4, `$${p.gold} !${p.potions} Pat ${p.potatoes} Car ${p.meat || 0}`.slice(0, 25), 235, 205, 120);
+    UI.text(1, 5, quest0.slice(0, 25), 235, 225, 190);
+  } else drawHudFull(p);
+  drawHudRest(p);
+}
+
+function drawHudFull(p) {
   box(1, 0, 44, 9, `${PLAYER_NAME} · Nv ${p.lvl}`);
   const hpc = p.hp / p.maxHp > 0.5 ? [90, 220, 80] : p.hp / p.maxHp > 0.25 ? [255, 200, 60] : [255, 70, 60];
   bar(3, 1, 'HP', p.hp, p.maxHp, 20, hpc);
@@ -1163,6 +1180,9 @@ function drawHud() {
     : `Mata al dragón (montañas del ${compassTo(world.lair.x, world.lair.y)}).`;
   UI.text(3, 7, q.slice(0, 40), 235, 225, 190);
   UI.text(3, 6, 'Misión:', 240, 200, 90);
+}
+
+function drawHudRest(p) {
 
   // Arriba a la derecha: hora, lugar, clima
   const t1 = `Día ${dayNumber()} · ${clockText()}${isNight() ? ' (noche)' : ''}`;

@@ -71,3 +71,11 @@ body[data-state="play"] #touch #topbar, body[data-state="title"] #touch #topbar 
 body[data-state="title"] #touch #menu { display: flex; }
 body[data-state="intro"] #touch #skip { display: block; }
 @media (orientation: portrait) { body.touch #touch #rotate { display: flex; } }
+
+/* en el móvil las pantallas suelen ir con menos brillo: un poco más de luz y contraste */
+body.touch #screen { filter: brightness(1.22) contrast(1.06) saturate(1.05); }
+
+/* aviso para instalarlo en el iPhone (solo en Safari, fuera de la app instalada) */
+#iostip { position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%); display: none; max-width: 90%;
+  padding: 8px 14px; border-radius: 10px; background: rgba(20, 16, 12, 0.85); color: #f4e2b8; font-size: 13px; text-align: center; }
+body.ios[data-state="title"] #iostip { display: block; }

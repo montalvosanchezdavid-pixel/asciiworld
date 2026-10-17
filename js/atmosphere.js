@@ -71,7 +71,7 @@ function drawAtmosphere() {
   }
   // viñeta: bordes más oscuros, azulados de noche y casi negros bajo tierra
   const g = x.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.42, W / 2, H / 2, Math.hypot(W, H) * 0.56);
-  const a = world.under ? 0.65 : 0.28 + 0.27 * night;
+  const a = (world.under ? 0.65 : 0.28 + 0.27 * night) * (IS_TOUCH ? 0.45 : 1);    // en el móvil, más suave
   g.addColorStop(0, 'rgba(0,0,0,0)');
   g.addColorStop(1, night > 0.5 && !world.under ? `rgba(4,8,26,${a})` : `rgba(0,0,0,${a})`);
   x.fillStyle = g;
