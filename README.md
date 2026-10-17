@@ -1,5 +1,7 @@
 # ASCII World
 
+**Jugar online:** https://montalvosanchezdavid-pixel.github.io/asciiworld/
+
 Action RPG en tiempo real en un mundo medieval dibujado solo con caracteres de texto, inspirado en el estilo de [@ansenjeo](https://www.instagram.com/ansenjeo/): miles de caracteres diminutos de colores, iluminación dinámica y resplandor (bloom).
 
 ## Cómo jugar
@@ -141,3 +143,15 @@ Abre http://localhost:8123/?galeria para ver todas las figuras animadas (ESPACIO
 - `js/homes.js`: casas con pisos y tejados, huertos y hambre
 - `js/main.js`: bucle de juego, combate, IA, clima, interfaz
 - `v1/`: la primera versión, por turnos
+
+## Publicar cambios
+
+El juego se publica con GitHub Pages desde la rama `main`. Para subir una versión nueva:
+
+```bash
+git add -A
+git commit -m "Describe el cambio"
+git push
+```
+
+En uno o dos minutos la web se actualiza. Si el navegador muestra la versión vieja, recarga con Ctrl+F5 (o sube el número `?v=` de `index.html`).
