@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASCII World - El Caballero</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game">
+    <div id="viewwrap">
+      <canvas id="view"></canvas>
+      <canvas id="minimap" class="hidden"></canvas>
+      <div id="overlay">
+<pre class="art">
+            |>>>                          |>>>
+            |                             |
+        _  _|_  _                     _  _|_  _
+       |;|_|;|_|;|                   |;|_|;|_|;|
+       \.    .  /       _______      \.    .  /
+        \:  .  /       |   @   |      \:  .  /
+         ||:   |_______|__/|\__|______||:   |
+         ||:.  |   []     / \     []  ||:.  |
+         ||:  .|______________________||:  .|
+    _____||_:__|______________________||_:__|_____
+</pre>
+        <pre class="big">A S C I I   W O R L D</pre>
+        <p>El reino de Valcorona está aterrorizado por un dragón.<br>
+           Eres su último caballero. Explora, lucha, mejora tu equipo<br>
+           y acaba con la bestia en su guarida de las montañas.</p>
+        <p class="keys">
+          Mover: flechas / WASD / teclado numérico · Diagonales: Q E Z C<br>
+          Atacar y hablar: camina hacia el personaje · Esperar: espacio<br>
+          Beber poción: P · Mapa: M
+        </p>
+        <p class="blink">Pulsa ENTER para comenzar</p>
+      </div>
+    </div>
+    <aside id="side">
+      <div id="hud"></div>
+      <div id="legend">
+        <div class="title">Leyenda</div>
+        <div><b class="c-player">@</b> tú &nbsp; <b class="c-king">K</b> rey &nbsp; <b class="c-guard">G</b> guardia</div>
+        <div><b class="c-smith">H</b> herrero &nbsp; <b class="c-armor">A</b> armero</div>
+        <div><b class="c-healer">C</b> curandera &nbsp; <b class="c-peasant">p</b> aldeano</div>
+        <div><b class="c-goblin">g</b> goblin <b class="c-wolf">w</b> lobo <b class="c-bandit">b</b> bandido</div>
+        <div><b class="c-bear">B</b> oso <b class="c-orc">o</b> orco <b class="c-skel">s</b> esqueleto</div>
+        <div><b class="c-dragon">D</b> DRAGÓN &nbsp; <b class="gold">$</b> oro <b class="potion">!</b> poción</div>
+        <div class="dim">P poción · M mapa · espacio esperar</div>
+      </div>
+    </aside>
+    <div id="log"></div>
+  </div>
+  <script src="js/rng.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+}
+
+#wrap {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#screen {
+  display: block;
+  image-rendering: pixelated;
+  cursor: crosshair;
+}
+
+/* ------------------------------------------------------------------ Controles táctiles */
+body.touch, body.touch #screen { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+#touch { position: fixed; inset: 0; pointer-events: none; z-index: 10; font-family: Consolas, "DejaVu Sans Mono", monospace; }
+#touch button, #touch #stick { pointer-events: auto; }
+#touch button {
+  border: 2px solid rgba(255, 220, 150, 0.35); background: rgba(20, 16, 12, 0.45); color: #f4e2b8;
+  border-radius: 50%; font-size: 18px; line-height: 1; padding: 0; -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+}
+#touch button.on { background: rgba(255, 200, 110, 0.45); border-color: rgba(255, 230, 170, 0.9); }
+#stick {
+  position: absolute; left: max(18px, env(safe-area-inset-left)); bottom: 18px; width: 128px; height: 128px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 220, 150, 0.10), rgba(255, 220, 150, 0.03) 70%);
+  border: 2px solid rgba(255, 220, 150, 0.25);
+}
+#knob {
+  position: absolute; left: 50%; top: 50%; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%;
+  background: rgba(255, 220, 150, 0.35); border: 2px solid rgba(255, 235, 190, 0.6); transition: transform 0.05s;
+}
+#acts { position: absolute; right: max(14px, env(safe-area-inset-right)); bottom: 14px; width: 220px; height: 200px; }
+#acts button { position: absolute; }
+#acts .big { right: 0; bottom: 0; width: 82px; height: 82px; font-size: 34px; }
+#acts .mid { width: 58px; height: 58px; font-size: 22px; font-weight: bold; }
+#acts .sm { width: 44px; height: 44px; font-size: 18px; }
+#acts .b-e { right: 92px; bottom: 4px; }
+#acts .b-dash { right: 14px; bottom: 92px; }
+#acts .b-bag { right: 98px; bottom: 76px; }
+/* menús desplegables (mochila y opciones) */
+#touch .pop { position: absolute; display: none; gap: 8px; padding: 8px; border-radius: 14px;
+  background: rgba(14, 10, 8, 0.82); border: 1px solid rgba(255, 220, 150, 0.3); pointer-events: auto; }
+#touch .pop.open { display: flex; }
+#touch .pop button { position: static; width: 54px; height: 54px; border-radius: 12px; font-size: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+#touch .pop small { font-size: 9px; margin-top: 3px; color: #d8c7a0; }
+#bagmenu { right: max(14px, env(safe-area-inset-right)); bottom: 196px; }
+#gearmenu { top: 52px; left: 50%; transform: translateX(-50%); }
+#topbar { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+#topbar button { width: 38px; height: 38px; font-size: 20px; border-radius: 10px; }
+#menu { position: absolute; left: 50%; bottom: 22%; transform: translateX(-50%); display: none; gap: 14px; }
+#menu button, #skip { border-radius: 12px; width: auto; height: auto; padding: 12px 22px; font-size: 18px; }
+#skip { position: absolute; right: 18px; top: 12px; display: none; }
+#rotate {
+  position: absolute; inset: 0; display: none; align-items: center; justify-content: center; text-align: center; padding: 30px;
+  background: rgba(0, 0, 0, 0.92); color: #f4e2b8; font-size: 20px; pointer-events: auto;
+}
+/* qué se ve en cada momento */
+#touch #stick, #touch #acts, #touch #topbar { display: none; }
+body[data-state="play"] #touch #stick, body[data-state="play"] #touch #acts { display: block; }
+body:not([data-state="play"]) #touch #bagmenu { display: none; }
+body[data-state="play"] #touch #topbar, body[data-state="title"] #touch #topbar { display: flex; }
+body[data-state="title"] #touch #menu { display: flex; }
+body[data-state="intro"] #touch #skip { display: block; }
+@media (orientation: portrait) { body.touch #touch #rotate { display: flex; } }
